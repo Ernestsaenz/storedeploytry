@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+
+# Replit specific
+.config/
+.upm/
+.pythonlibs/
+
+# Project specific
+chroma_db/
+document_cache/
+backup_code/
+
+# Environment variables
+.env
+
+# System files
+.DS_Store
+*.swp
+*.swo
