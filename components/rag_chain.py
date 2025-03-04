@@ -1,6 +1,8 @@
 # components/rag_chain.py
 from langchain_openai import OpenAIEmbeddings
-from langchain_anthropic import ChatAnthropic  # Only new import needed
+from langchain_openai import ChatOpenAI
+f##from langchain_anthropic import ChatAnthropic  # Only new import needed
+
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
@@ -14,12 +16,22 @@ class RAGChain:
         self.persist_directory = "./chroma_db"
         self.collection_name = "hepatology_docs"
         # Only change is here - replacing ChatOpenAI with ChatAnthropic
-        self.llm = ChatAnthropic(
-            model="claude-3-5-sonnet-20241022",
-            temperature=0.2,
-            max_tokens_to_sample=6000,  # Changed from max_tokens to max_tokens_to_sample for Claude
-            anthropic_api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
+      self.llm = ChatOpenAI( model="deepseek/deepseek-r1:free",  # The DeepSeek R1 1776 model
+    temperature=0.2,
+    max_tokens=6000,  # Note: changed from max_tokens_to_sample
+    openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+    openai_api_base="https://openrouter.ai/api/v1",
+    default_headers={
+        "HTTP-Referer": "https://replit.com"
+        ## Replace with your real site
+        "X-Title": "Coeliac Disease Expert System"
+    }
+)
+        # self.llm = ChatAnthropic(
+          #  model="claude-3-5-sonnet-20241022",
+           # temperature=0.2,
+            #max_tokens_to_sample=6000,  # Changed from max_tokens to max_tokens_to_sample for Claude          anthropic_api_key=os.getenv("ANTHROPIC_API_KEY")
+        
         self.embedding_function = OpenAIEmbeddings()  # Keep OpenAI embeddings
         self.db = None
         self.qa_chain = None
