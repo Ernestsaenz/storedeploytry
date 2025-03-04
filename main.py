@@ -49,6 +49,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve static files
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
+# Create static directory if it doesn't exist
+Path("static").mkdir(exist_ok=True)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/ui")
+async def ui():
+    """Redirect to the UI"""
+    from fastapi.responses import FileResponse
+    return FileResponse("static/index.html")
+
 # Define request model
 class Question(BaseModel):
     text: str
