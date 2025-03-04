@@ -9,20 +9,10 @@ import hashlib
 class DataProcessor:
     def __init__(self):
         self.urls = [
-            "https://www.dropbox.com/scl/fi/giq74bwv8uhr5urd0a0gk/cg9_combined.txt?rlkey=y7j2iaig54enl7cad9vwnz0ae&dl=1",
-            "https://www.dropbox.com/scl/fi/hib1wjgamsxg4gbp9wlym/cg10_combined.txt?rlkey=k1lpbbn0as17bumxd3qx6hqtb&dl=1",
-            "https://www.dropbox.com/scl/fi/0al9ards4g4d59tblq8ba/cg11_combined.txt?rlkey=8zb2yfkgyqzklhizren55xyny&dl=1",
-            "https://www.dropbox.com/scl/fi/jpi330r90tffefc8yrcud/cg12_combined.txt?rlkey=w2xa902zgmd7qw7acmekl803m&dl=1",
-            "https://www.dropbox.com/scl/fi/ctl5f3t0pn21ete33es4g/cg13_combined.txt?rlkey=vv7wzjpxt7ec0poizdyw1r258&dl=1",
-            "https://www.dropbox.com/scl/fi/th6p955mdpt5bjxgozgyv/cg1_combined.txt?rlkey=83nvn9er49pcvpmgi1s0oieul&dl=1",
-            "https://www.dropbox.com/scl/fi/wp9qt8d6x795jlqqxlqcx/cg2_combined.txt?rlkey=4p8c7qdx3idixb5amecmy3nr6&dl=1",
-            "https://www.dropbox.com/scl/fi/bwu5z5asmfd0y1d87m0n7/cg3_combined.txt?rlkey=ym5hqnpxjfv6jpd7bgmjpia8s&dl=1",
-            "https://www.dropbox.com/scl/fi/v06k8pcyxpz07cneoh5et/cg4_combined.txt?rlkey=q4lprx5vyi7fp6zn2tpm5sc8e&dl=1",
-            "https://www.dropbox.com/scl/fi/9lgu141zwjcm7kz500azb/cg5_combined.txt?rlkey=eajdl05zb7id34pj3xece8zpd&dl=1",
-            "https://www.dropbox.com/scl/fi/pemcm8mmmgerlu3y0dzer/cg6_combined.txt?rlkey=bfe6322dn13kaibmag20iqljq&dl=1",
-            "https://www.dropbox.com/scl/fi/403a2e6qyrcl5896lxkr6/cg7_combined.txt?rlkey=spteu8yy901plpkgnh2niobo9&dl=1",
-            "https://www.dropbox.com/scl/fi/tmzxpvlk40l7dqhoh21g3/cg8_combined.txt?rlkey=zfsjx0uhxrji4gj0aasbhck5g&dl=1",
-            "https://www.dropbox.com/scl/fi/830vbki4033uy3tgn4h12/medication_warnings_before_administration_total.txt?rlkey=bgx7ntqat420urqzufaje0av7&st=knom5zif&dl=1"
+            "https://www.dropbox.com/scl/fi/go23hsel50p08iz6h2yku/American-College-of-Gastroenterology-Guidelines-Update-Diagnosis-and-Management-of-Celiac-Disease.md?rlkey=0ln8z72vaqlqowdg21s59pxuw&st=r7ua4en6&dl=1",
+            "https://www.dropbox.com/scl/fi/cuh0w04r8dnd0b2nk9m8n/Diagnosis-and-management-of-adult-coeliac-disease-guidelines-from-the-British-Society-of-Gastroenterology.md?rlkey=zm65ebf618vc5mpc4yg5ygsxz&st=67q9tpqm&dl=1",
+            "https://www.dropbox.com/scl/fi/a8aly2c8m2qk76o5sxuzz/European-Society-for-the-Study-of-Coeliac-Disease-ESsCD-guideline-for-coeliac-disease-and-other-gluten-related-disorders.md?rlkey=ct3e0ax28etvibc8j8rhaqq3c&st=u96xl3bz&dl=1",
+"https://www.dropbox.com/scl/fi/830vbki4033uy3tgn4h12/medication_warnings_before_administration_total.txt?rlkey=bgx7ntqat420urqzufaje0av7&st=knom5zif&dl=1"
         ]
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1200,
