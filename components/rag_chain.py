@@ -16,17 +16,18 @@ class RAGChain:
         self.persist_directory = "./chroma_db"
         self.collection_name = "hepatology_docs"
         # Only change is here - replacing ChatOpenAI with ChatAnthropic
-      self.llm = ChatOpenAI( model="deepseek/deepseek-r1:free",  # The DeepSeek R1 1776 model
-    temperature=0.2,
-    max_tokens=6000,  # Note: changed from max_tokens_to_sample
-    openai_api_key=os.getenv("OPENROUTER_API_KEY"),
-    openai_api_base="https://openrouter.ai/api/v1",
-    default_headers={
-        "HTTP-Referer": "https://replit.com"
-        ## Replace with your real site
-        "X-Title": "Coeliac Disease Expert System"
-    }
-)
+        self.llm = ChatOpenAI(
+            model="deepseek/deepseek-r1:free",  # The DeepSeek R1 1776 model
+            temperature=0.2,
+            max_tokens=6000,  # Note: changed from max_tokens_to_sample
+            openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+            openai_api_base="https://openrouter.ai/api/v1",
+            default_headers={
+                "HTTP-Referer": "https://replit.com",
+                ## Replace with your real site
+                "X-Title": "Coeliac Disease Expert System"
+            }
+        )
         # self.llm = ChatAnthropic(
           #  model="claude-3-5-sonnet-20241022",
            # temperature=0.2,
