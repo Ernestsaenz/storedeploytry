@@ -10,8 +10,8 @@ class DataProcessor:
     def __init__(self):
         self.urls = [
             "https://www.dropbox.com/scl/fi/go23hsel50p08iz6h2yku/American-College-of-Gastroenterology-Guidelines-Update-Diagnosis-and-Management-of-Celiac-Disease.md?rlkey=0ln8z72vaqlqowdg21s59pxuw&st=r7ua4en6&dl=1",
-            "https://www.dropbox.com/scl/fi/cuh0w04r8dnd0b2nk9m8n/Diagnosis-and-management-of-adult-coeliac-disease-guidelines-from-the-British-Society-of-Gastroenterology.md?rlkey=zm65ebf618vc5mpc4yg5ygsxz&st=67q9tpqm&dl=1",
-            "https://www.dropbox.com/scl/fi/a8aly2c8m2qk76o5sxuzz/European-Society-for-the-Study-of-Coeliac-Disease-ESsCD-guideline-for-coeliac-disease-and-other-gluten-related-disorders.md?rlkey=ct3e0ax28etvibc8j8rhaqq3c&st=u96xl3bz&dl=1",
+            "https://www.dropbox.com/scl/fi/cuh0w04r8dnd0b2nk9m8n/Diagnosis-and-management-of-adult-coeliac-disease-guidelines-from-the-British-Society-of-Gastroenterology.md rlkey=zm65ebf618vc5mpc4yg5ygsxz&st=67q9tpqm&dl=1",
+            "https://www.dropbox.com/scl/fi/a8aly2c8m2qk76o5sxuzz/European-Society-for-the-Study-of-Coeliac-Disease-ESsCD-guideline-for-coeliac-disease-and-other-gluten-related-disorders.md rlkey=ct3e0ax28etvibc8j8rhaqq3c&st=u96xl3bz&dl=1",    
 "https://www.dropbox.com/scl/fi/830vbki4033uy3tgn4h12/medication_warnings_before_administration_total.txt?rlkey=bgx7ntqat420urqzufaje0av7&st=knom5zif&dl=1"
         ]
         self.text_splitter = RecursiveCharacterTextSplitter(
