@@ -1,7 +1,7 @@
 # components/rag_chain.py
 from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
-f##from langchain_anthropic import ChatAnthropic  # Only new import needed
+# from langchain_anthropic import ChatAnthropic  # Only new import needed
 
 from langchain_community.vectorstores import Chroma
 from langchain.prompts import ChatPromptTemplate
