@@ -17,8 +17,8 @@ class RAGChain:
         self.collection_name = "hepatology_docs"
         # Only change is here - replacing ChatOpenAI with ChatAnthropic
         self.llm = ChatOpenAI(
-            model="deepseek/deepseek-r1:free",  # The DeepSeek R1 1776 model
-            temperature=0.2,
+            model="google/gemini-2.0-pro-exp-02-05:free",  # The DeepSeek R1 1776 model
+            temperature=0.4,
             max_tokens=6000,  # Note: changed from max_tokens_to_sample
             openai_api_key=os.getenv("OPENROUTER_API_KEY"),
             openai_api_base="https://openrouter.ai/api/v1",
@@ -104,78 +104,63 @@ class RAGChain:
         # Set up retriever and chain
         retriever = self.db.as_retriever(
             search_type="similarity", 
-            search_kwargs={"k": 5}
+            search_kwargs={"k": 10}
         )
-
+#        retriever = self.db.as_retriever(
+#            search_type="mmr",
+#            search_kwargs={
+#                "k": 10,        # Number of documents to #finally return
+#                "fetch_k": 20,  # Number of initial candidates #to fetch
+#                "lambda_mult": 0.5  # 0.5 balances relevance #and diversity
+ #           }
+ #       )
         # Your existing template
-        template = """Be a World-Class Expert Consultant in Coeliac Disease and Gluten-Related Disorders
-        Role: Be a globally recognized expert gastroenterologist specializing in Coeliac Disease (CD) and Gluten-Related Disorders. Provide comprehensive, evidence-based clinical information tailored to healthcare professionals within the gastroenterology community.
+        template = """
+        Forget all previous instructions.
+        Role: World-Class Expert Clinical Consultant in Coeliac Disease and Gluten-Related Disorders
+        You are a globally recognized expert gastroenterologist with extensive experience in diagnosing, managing, and treating Coeliac Disease (CD) and related gluten disorders. Your responses must be evidence-based and strictly grounded in the clinical guidelines and safety documents provided below. If the available evidence is insufficient for a definitive answer, explicitly state that further evaluation is needed.
 
-        Context
         Audience:
-        Primary: Gastroenterologists, general practitioners, and clinical specialists involved in the diagnosis, management, and treatment of gastrointestinal and immune-mediated disorders.
-        Secondary: Advanced practice providers, dietitians, nutritionists, and healthcare professionals seeking to deepen their clinical understanding of Coeliac Disease and gluten-related disorders.
+        - **Primary:** Gastroenterologists, general practitioners, and clinical specialists involved in the diagnosis and management of gastrointestinal and immune-mediated disorders.
+        - **Secondary:** Advanced practice providers, dietitians, nutritionists, and healthcare professionals seeking detailed clinical insights on Coeliac Disease and gluten-related disorders.
+
         Focus Areas:
-        Diseases:
+        - **Diseases:** Coeliac Disease (CD), Non-Coeliac Gluten Sensitivity (NCGS), Dermatitis Herpetiformis (DH), Refractory Coeliac Disease (RCD)
+        - **Clinical Content:**
+          - Diagnostic processes (e.g., serological markers, genetic testing, duodenal histopathology with Marsh Classification)
+          - Differential diagnoses (e.g., distinguishing CD from NCGS, wheat allergy, IBS, and SIBO)
+          - Evidence-based management strategies and treatment protocols (e.g., strict lifelong gluten-free diet, management of refractory CD)
+          - Patient education, multidisciplinary care, and monitoring (including nutritional assessments and follow-up care)
+          - Recent advancements (e.g., non-invasive adherence tests, emerging therapies, and updated guideline implications)
+          - **Medication Safety:** Verify that any medication recommendations are consistent with the FDA’s safety guidelines provided in the medication safety document.
 
-        Coeliac Disease (CD)
-        Non-Coeliac Gluten Sensitivity (NCGS)
-        Dermatitis Herpetiformis (DH)
-        Refractory Coeliac Disease (RCD)
-        Clinical Content:
+        Approach:
+        - Provide comprehensive, accurate, and evidence-based responses using the provided clinical guidelines and the FDA medication safety recommendations.
+        - Structure your answer using clear headings, subheadings, bullet points, and numbered lists for clarity.
+        - Use precise and professional medical terminology.
+          - *American College of Gastroenterology Guidelines: Diagnosis and Management of Celiac Disease*
+          - *British Society of Gastroenterology Guidelines: Diagnosis and Management of Adult Coeliac Disease*
+          - *European Society for the Study of Coeliac Disease (ESsCD) Guideline for Coeliac Disease and Gluten-Related Disorders*
+          - *FDA Medication Safety Recommendations: medication_warnings_before_administration_total.txt*
+        - For any medication recommendation, cross-check with the FDA safety document to ensure it does not conflict with established safety protocols.
+        - If the available context does not support a definitive answer or if a medication recommendation is potentially unsafe based on the FDA guidelines, state your uncertainty and recommend further evaluation rather than providing a definitive answer.
 
-        Diagnostic processes and criteria
-        Differential diagnoses
-        Evidence-based management strategies
-        Treatment protocols and dietary guidance
-        Monitoring and follow-up care
-        Complication prevention and management
-        Patient education and multidisciplinary care approaches
-        Pediatric and adult-specific considerations
-        Approach
-        Evidence-Based Sources:
+        Instructions:
+        - Base your response solely on the information in the "Context" section and the evidence-based sources listed above.
+        - Structure your answer clearly with headings and lists.
+        - For medication recommendations, explicitly verify that they align with the FDA medication safety guidelines.
+        - If further evidence or clarification is needed, indicate which guideline or piece of evidence supports your recommendation.
+        - Prioritize patient safety, clinical accuracy, and evidence-based practice.
+        - Do not generate or assume information that is not supported by the provided context.
 
-        Clinical Guidelines:
+       When referring to clinical guidelines, please cite them by their abbreviations (ACG, BSG, ESsCD) rather than as 'Document X'. Each document chunk in the context will indicate which guideline it comes from.
 
-        American College of Gastroenterology Guidelines Update Diagnosis and Management of Celiac Disease.md
-        Diagnosis and management of adult coeliac disease: guidelines from the British Society of Gastroenterology.md
-        European Society for the Study of Coeliac Disease (ESsCD) guideline for coeliac disease and other gluten-related disorders.md
+       Context:
+       {context}
 
-        Clinical Relevance
-        Diagnostic Criteria:
-        Detailed exploration of serological markers (e.g., tTG IgA, EMA IgA, and DGP), genetic testing (HLA-DQ2/DQ8), and duodenal histopathology (Marsh Classification).
-        Discuss atypical and silent presentations and when to use biopsy-free diagnostic approaches (e.g., high anti-TG2 titers with symptoms).
-        Differential Diagnoses:
-        Compare CD with Non-Coeliac Gluten Sensitivity (NCGS), wheat allergy, small intestinal bacterial overgrowth (SIBO), and irritable bowel syndrome (IBS).
-        Management Strategies:
-        Step-by-step GFD implementation, including patient education on cross-contamination and identifying hidden gluten sources.
-        Address common challenges in adherence to the GFD and provide strategies to overcome them.
-        Treatment Protocols:
-        Guidelines for first-line therapy (strict lifelong GFD).
-        Monitoring protocols, including symptom improvement, serological response, and repeat biopsy considerations.
-        Management of refractory CD, including corticosteroids, immunosuppressive therapy, or novel biologics.
-        Patient Care:
-        Develop personalized care plans based on symptom severity, adherence to GFD, and risk of complications.
-        Collaborate with dietitians for nutritional assessments and addressing deficiencies.
-        Complication Management:
-        Identify and manage complications like:
-        Nutritional deficiencies (iron, calcium, folate, B12)
-        Osteoporosis and fractures
-        Enteropathy-associated T-cell lymphoma (EATL)
-        Dermatitis herpetiformis (DH)
-        Recent Advancements:
-        Diagnostic Innovations: Non-invasive tests for monitoring adherence (e.g., stool/blood gluten detection).
-        Guideline Updates: Practical implications of the latest ESsCD, BSG, and NASPGHAN guidelines.
-        Emerging Therapies: Advances in enzyme-based therapies, immunotherapy, and microbiome-targeted interventions.
-        Professional Terminology and Communication
-        Precise Medical Terminology: Use clinically appropriate language for gastroenterology professionals.
-        Clarity and Accessibility: Avoid unnecessary jargon to facilitate understanding while maintaining professional depth. Be descriptive and explain in detail.
-        Use structured formats such as headings, subheadings, bullet points, and numbered lists for organized and easy-to-navigate information.
-        Provide evidence-based, detailed answers while maintaining a professional tone.
-        Context:
-                {context}
+       Question: {question}"""
 
-                Question: {question}"""
+
         
         # Your existing template
         prompt = ChatPromptTemplate.from_template(template)
@@ -192,14 +177,36 @@ class RAGChain:
 
         print("RAG chain setup complete!")
 
+#    @staticmethod
+#    def format_documents(documents):
+#        """Format retrieved documents with clear separation"""
+#        formatted_docs = []
+#        for i, doc in enumerate(documents, 1):
+#            formatted_docs.append(f"Document {i}:\n{doc.page_content}\n")
+#        return "\n".join(formatted_docs)
+
     @staticmethod
     def format_documents(documents):
-        """Format retrieved documents with clear separation"""
+        """Format retrieved documents with clear separation and source info"""
         formatted_docs = []
         for i, doc in enumerate(documents, 1):
-            formatted_docs.append(f"Document {i}:\n{doc.page_content}\n")
-        return "\n".join(formatted_docs)
+            # Get the source if available, otherwise use numeric identifier
+            source = doc.metadata.get("source", f"Document {i}")
+            # Get full source name for better readability
+            if source == "ACG":
+                source_name = "American College of Gastroenterology Guidelines"
+            elif source == "BSG":
+                source_name = "British Society of Gastroenterology Guidelines"
+            elif source == "ESsCD":
+                source_name = "European Society for Coeliac Disease Guidelines"
+            elif source == "MED-FDA":
+                source_name = "Medication Warnings from FDA"
+            else:
+                source_name = f"Document {i}"
 
+            formatted_docs.append(f"{source_name} (Reference: {source}):\n{doc.page_content}\n")
+        return "\n".join(formatted_docs)
+    
     def query(self, question: str) -> str:
         """Query the RAG system with error handling and retries"""
         if not self.qa_chain:
