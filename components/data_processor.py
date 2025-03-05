@@ -77,41 +77,41 @@ class DataProcessor:
 #            batch = all_documents[i:i + self.batch_size]
 #            yield batch
 
-def process_documents(self):
-    """Process documents with improved chunking and metadata"""
-    all_documents = []
+    def process_documents(self):
+        """Process documents with improved chunking and metadata"""
+        all_documents = []
 
-    for url in self.urls:
-        print(f"Processing URL: {url}")
-        content = self.fetch_url(url)
-        if content:
-            # Determine guideline source based on URL
-            source = "Unknown"
-            if "American-College-of-Gastroenterology" in url:
-                source = "ACG"
-            elif "British-Society-of-Gastroenterology" in url:
-                source = "BSG"
-            elif "European-Society-for-the-Study-of-Coeliac-Disease" in url:
-                source = "ESsCD"
-            elif "medication_warnings" in url:
-                source = "MED-FDA"
+        for url in self.urls:
+            print(f"Processing URL: {url}")
+            content = self.fetch_url(url)
+            if content:
+                # Determine guideline source based on URL
+                source = "Unknown"
+                if "American-College-of-Gastroenterology" in url:
+                    source = "ACG"
+                elif "British-Society-of-Gastroenterology" in url:
+                    source = "BSG"
+                elif "European-Society-for-the-Study-of-Coeliac-Disease" in url:
+                    source = "ESsCD"
+                elif "medication_warnings" in url:
+                    source = "MED-FDA"
 
-            # Process the content
-            chunks = self.text_splitter.split_text(content)
-            for chunk in chunks:
-                document = Document(
-                    page_content=chunk,
-                    metadata={"source": source}
-                )
-                all_documents.append(document)
+                # Process the content
+                chunks = self.text_splitter.split_text(content)
+                for chunk in chunks:
+                    document = Document(
+                        page_content=chunk,
+                        metadata={"source": source}
+                    )
+                    all_documents.append(document)
 
-            print(f"Successfully processed {len(chunks)} chunks from {source} guideline")
-        else:
-            print(f"Failed to process {url}")
+                print(f"Successfully processed {len(chunks)} chunks from {source} guideline")
+            else:
+                print(f"Failed to process {url}")
 
-    print(f"Total documents collected: {len(all_documents)}")
+        print(f"Total documents collected: {len(all_documents)}")
 
-    # Yield documents in batches
-    for i in range(0, len(all_documents), self.batch_size):
-        batch = all_documents[i:i + self.batch_size]
-        yield batch
+        # Yield documents in batches
+        for i in range(0, len(all_documents), self.batch_size):
+            batch = all_documents[i:i + self.batch_size]
+            yield batch
