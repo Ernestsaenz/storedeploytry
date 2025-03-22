@@ -78,6 +78,11 @@ async def query_rag(question: Question):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/health")
+async def health():
+    """Health check endpoint"""
+    return {"status": "ok"}
+
 @app.get("/")
 async def root():
     """Root endpoint"""
