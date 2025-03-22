@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 import hashlib
 
+
 class DataProcessor:
     def __init__(self):
         self.urls = [
