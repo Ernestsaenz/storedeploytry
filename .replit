@@ -7,7 +7,7 @@ modules = ["python-3.11"]
 PYTHON_VERSION = "3.11"
 
 [nix]
-channel = "stable-22_11"
+channel = "stable-23_05" 
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
