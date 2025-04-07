@@ -7,6 +7,23 @@
     <!-- Add Showdown.js for Markdown conversion -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <style>
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+        
+        .institution-logo {
+            height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
@@ -74,6 +91,11 @@
 </head>
 <body>
     <div class="container">
+        <div class="logo-container">
+            <img src="/static/Texas_Liver_Institute-2aa.png" alt="Texas Liver Institute" class="institution-logo">
+            <img src="/static/icon-symbol-uh-logo-black_1_0.png" alt="University of Heidelberg" class="institution-logo">
+            <img src="/static/Universitätsklinikum_Mannheim_Logo.png" alt="Universitätsmedizin Mannheim" class="institution-logo">
+        </div>
         <h1>Coeliac Disease Expert System</h1>
         <p>Ask any question about Coeliac Disease and related disorders:</p>
 
